@@ -1,27 +1,27 @@
 import React, { Component } from 'react'
+import CommentsList from './CommentsList'
 
 export default class Article extends Component {
-/*
-
-    constructor() {
+    constructor () {
         super()
         this.state = {
             isOpen: false
         }
     }
 
-*/
-    state = {
-        isOpen: false
-    }
-
     render() {
         const { article } = this.props
-        const body = this.state.isOpen ? <section>{article.text}</section> : null
+        const { comments } = article ? article : null
+
+        const body = <div>
+            <section>{article.text}</section>
+            <CommentsList comments={comments} />
+        </div>
+
         return (
             <div>
                 <h3 onClick = {this.handleClick}>{article.title}</h3>
-                {body}
+                {this.state.isOpen ? body : null}
             </div>
         )
     }
