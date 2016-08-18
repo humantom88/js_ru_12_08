@@ -17,8 +17,8 @@ export default class CommentsList extends Component {
 
         return (
             <div>
-                <h4 onClick={this.handleClick}>{ this.state.isOpen ? hideComments : showComments}</h4>
                 {this.state.isOpen ? commentsItems : null}
+                <h4 onClick={this.handleClick}>{ this.state.isOpen ? hideComments : showComments}</h4>
             </div>
         )
     }
