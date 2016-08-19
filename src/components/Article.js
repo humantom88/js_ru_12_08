@@ -11,7 +11,7 @@ export default class Article extends Component {
 
     render() {
         const { article } = this.props
-        const { comments } = article ? article : null
+        const comments = article && article.comments ? article.comments : null
 
         const body = <div>
             <section>{article.text}</section>
