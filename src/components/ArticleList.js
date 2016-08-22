@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Article from './Article'
 import toggleOpenArticle from '../decorators/toggleOpenArticle'
 
-export default class ArticleList extends Component {
+class ArticleList extends Component {
     static propTypes = {
         articles: PropTypes.array,
         openArticleId: PropTypes.string,
