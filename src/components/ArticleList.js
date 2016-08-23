@@ -1,22 +1,22 @@
 import React, { Component, PropTypes } from 'react'
 import Article from './Article'
-import toggleOpenArticle from '../decorators/toggleOpenArticle'
+import toggleOpenItem from '../decorators/toggleOpenItem'
 
 class ArticleList extends Component {
     static propTypes = {
         articles: PropTypes.array,
-        openArticleId: PropTypes.string,
-        toggleOpenArticle: PropTypes.func
+        openItemId: PropTypes.string,
+        toggleOpenItem: PropTypes.func
     }
 
     render() {
-        const { articles, openArticleId, toggleOpenArticle } = this.props
+        const { articles, openItemId, toggleOpenItem } = this.props
 
         const articleItems = articles.map(articleObject =>
             <li key = {articleObject.id}>
                 <Article article = {articleObject}
-                         isOpen = {openArticleId === articleObject.id}
-                         toggleOpen = {toggleOpenArticle(articleObject.id)}
+                         isOpen = {openItemId === articleObject.id}
+                         toggleOpen = {toggleOpenItem(articleObject.id)}
                 />
             </li>)
         return (
@@ -27,4 +27,4 @@ class ArticleList extends Component {
     }
 }
 
-export default toggleOpenArticle(ArticleList)
+export default toggleOpenItem(ArticleList)
