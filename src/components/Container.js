@@ -11,10 +11,10 @@ class Container extends Component {
 
     }
 
-    state = {
+    /*state = {
         selected: null,
         selectedDateRange: null
-    }
+    }*/
 
     render() {
         const options = this.props.articles.map(article => ({
@@ -25,13 +25,11 @@ class Container extends Component {
             <div>
                 {/*<Select options = {options} value={this.state.selected} onChange = {this.handleChange} multi={true}/>*/}
                 <DateRangePicker />
-                <span>{this.state.selectedDay}</span>
                 <ArticleList articles = {this.props.articles} />
                 {/*<JqueryComponent items = {this.props.articles} ref={this.getJQ}/>*/}
             </div>
         )
     }
-
     
     /*getJQ = (ref) => {
         this.jqRef = ref
