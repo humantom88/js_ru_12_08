@@ -7,27 +7,65 @@ import DaypickerContainer from './DaypickerContainer'
 import Counter from './Counter'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
 class Container extends Component {
     static propTypes = {
-
+        setDateFilterFrom: PropTypes.func,
+        setDateFilterTo: PropTypes.func,
+        articles: PropTypes.array,
+        from: PropTypes.object,
+        to: PropTypes.object
     };
+
+    defaultProps = {
+        from: null,
+        to: null
+    }
 
     state = {
         selected: null
     }
+    
+    getFilteredArticles (articles, from, to) {
+        if (!from && !to) return articles;
+        if (from !== null && to !== null) {
+            return articles.filter(article => {
+                let articleDate = moment(article.date)
+                if (articleDate.isSameOrAfter(from) && articleDate.isSameOrBefore(to)) return true;
+                return false
+            })
+        } else if (from !== null) {
+            return articles.filter(article => {
+                let articleDate = moment(article.date)
+                if (articleDate.isSameOrAfter(from)) return true;
+                return false
+            })
+        } else if (to !== null) {
+            return articles.filter(article => {
+                let articleDate = moment(article.date)
+                if (articleDate.isSameOrBefore(to)) return true;
+                return false
+            })
+        }
+
+        return null;
+    }
 
     render() {
-        const options = this.props.articles.map(article => ({
+        const { from, to } = this.props.filter
+        const articles = this.getFilteredArticles(this.props.articles, from, to)
+        const options = articles.map(article => article ? ({
             label: article.title,
             value: article.id
-        }))
+        }) : null)
+
         return (
             <div>
                 <Counter />
-                <ArticleList articles = {this.props.articles} />
+                <ArticleList articles = {articles} />
                 <Select options = {options} value={this.state.selected} onChange = {this.handleChange} multi={true}/>
-                <DaypickerContainer />
+                <DaypickerContainer from = { from } to = { to } />
                 <JqueryComponent items = {this.props.articles} ref={this.getJQ}/>
             </div>
         )
@@ -46,7 +84,7 @@ class Container extends Component {
 }
 
 export default connect((state) => {
-        const { articles } = state
-        return { articles }
+        const { articles, filter } = state
+        return { articles, filter }
     }
 )(Container)
