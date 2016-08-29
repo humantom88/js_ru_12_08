@@ -28,6 +28,7 @@ class Container extends Component {
     }
     
     getFilteredArticles (articles, from, to) {
+        //Все хорошо, но лучше бы эту логику вынести в connect. А еще, все то же надо было для selected сделать
         if (!from && !to) return articles;
         if (from !== null && to !== null) {
             return articles.filter(article => {
