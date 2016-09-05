@@ -6,7 +6,7 @@ import './articleList.css'
 
 class ArticleList extends Component {
     static propTypes = {
-        articles: PropTypes.array.isRequired,
+        articles: PropTypes.object.isRequired,
         //from accordion decorator
         toggleOpenItem: PropTypes.func.isRequired,
         isOpenItem: PropTypes.func.isRequired
@@ -22,7 +22,7 @@ class ArticleList extends Component {
                 />
             </li>)
         return (
-            <CSSTransition transitionName="article" transitionLeaveTimeout ={1000} transitionEnterTimeout = {500}>
+            <CSSTransition transitionName="article" transitionLeaveTimeout={1000} transitionEnterTimeout={500}>
                 {articleItems}
             </CSSTransition>
         )
