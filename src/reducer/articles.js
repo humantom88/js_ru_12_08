@@ -1,21 +1,52 @@
-import { DELETE_ARTICLE, ADD_COMMENT } from '../constants'
+import { LOAD_ARTICLE_BY_ID, DELETE_ARTICLE, ADD_COMMENT, LOAD_ALL_ARTICLES, START, SUCCESS, FAIL } from '../constants'
 import { normalizedArticles } from '../fixtures'
-import { List } from 'immutable'
-import { ArticleModel } from './models'
+import { Record, List, Map, OrderedMap, fromJS } from 'immutable'
+import { arrayToMap } from '../utils'
 
-const immutableArticles = new List(normalizedArticles.map(article => new ArticleModel(article)))
+export const Article = new Record({
+    id: '',
+    date: null,
+    title: '',
+    text: '',
+    loading: false,
+    comments: []
+})
 
-export default (articles = immutableArticles, action) => {
-    const { type, payload, commentId, comments, response, error } = action
+const defaultState = new Map({
+    loading: false,
+    loaded: false,
+    entities: new OrderedMap({})
+})
+
+export default (state = defaultState, action) => {
+    const { type, payload, response, error } = action
 
     switch (type) {
         case DELETE_ARTICLE:
-            return articles.filter(rec => rec.get('id') !== payload.id).toList()
+            return state.update('entities', entities => entities.delete(payload.id))
 
         case ADD_COMMENT:
-            const newArticles = articles.updateIn([articles.findKey((article) => article.id === payload.articleId), 'comments'], comments => comments.concat(commentId))
-            return newArticles
+            return state.updateIn(
+                ['entities', payload.articleId, 'comments'],
+                comments => comments.concat(action.randomId)
+            )
+
+        case LOAD_ALL_ARTICLES + START:
+            return state.set('loading', true)
+
+        case LOAD_ALL_ARTICLES + SUCCESS:
+            return state
+                .update('entities', entities => entities.merge(arrayToMap(response, Article)))
+                .set('loading', false)
+                .set('loaded', true)
+
+        case LOAD_ARTICLE_BY_ID + START:
+            return state.updateIn(['entities', payload.id], article => article.set('loading', true))
+
+        case LOAD_ARTICLE_BY_ID + SUCCESS:
+            return state
+                .setIn(['entities', payload.id], new Article(response))
     }
 
-    return articles
+    return state
 }

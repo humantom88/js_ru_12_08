@@ -1,52 +1,44 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { addComment } from '../AC/comments'
 
-export class NewComment extends Component {
+class NewCommentForm extends Component {
     static propTypes = {
-        user: PropTypes.string,
-        id: PropTypes.string,
-        articleId: PropTypes.string,
-        addComment: PropTypes.func
-    }
+        articleId: PropTypes.string.isRequired
+    };
 
     state = {
-        user: 'Аноним',
-        text: ''
-    }
-
-    handleChangeUsername = (ev) => {
-        if (ev) { ev.preventDefault() }
-        const target = ev.target
-        this.setState({
-            user: target.value
-        })
-    }
-
-    handleChangeComment = (ev) => {
-        if (ev) { ev.preventDefault() }
-        const target = ev.target
-        this.setState({
-            text: target.value
-        })
-    }
-
-    handleSubmit = ev => {
-        if (ev) { ev.preventDefault() }
-        const { articleId, addComment } = this.props
-        const { text, user } = this.state
-
-        addComment({text, user}, articleId)
+        user: '',
+        text: '',
     }
 
     render() {
-        const { text, user } = this.state
         return (
             <div>
-                <form onSubmit={this.handleSubmit}>
-                    <input type="text" name="user" onChange={this.handleChangeUsername} value={user} placeholder="Введите имя пользователя"/><br />
-                    <textarea name="text" onChange={this.handleChangeComment} value={text} placeholder="Введите комментарий"/><br />
-                    <input type="submit" value={'Добавить комментарий'}/>
+                <form onSubmit = {this.handleSubmit}>
+                    text: <input value = {this.state.text} onChange = {this.handleChange('text')} />
+                    user: <input value = {this.state.user} onChange = {this.handleChange('user')} />
+                    <input type = 'submit' />
                 </form>
             </div>
         )
     }
+
+    handleChange = field => ev => {
+        this.setState({
+            [field]: ev.target.value
+        })
+    }
+
+    handleSubmit = ev => {
+        ev.preventDefault()
+        const { addComment, articleId } = this.props
+        addComment(this.state, articleId)
+
+        this.setState({
+            text: ''
+        })
+    }
 }
+
+export default connect(null, { addComment })(NewCommentForm)
