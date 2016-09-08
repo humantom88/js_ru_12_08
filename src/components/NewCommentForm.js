@@ -9,7 +9,7 @@ class NewCommentForm extends Component {
 
     state = {
         user: '',
-        text: '',
+        text: ''
     }
 
     render() {
