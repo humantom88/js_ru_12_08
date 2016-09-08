@@ -1,9 +1,19 @@
+import $ from 'jquery'
+import { START, SUCCESS, FAIL } from '../constants'
+
 export default store => next => action => {
-    const { generateRandomId, ...rest } = action
-    if (!generateRandomId) return next(action)
+    const { callAPI, type, ...rest } = action
+    if (!callAPI) return next(action)
 
     next({
-        ...rest,
-        randomId: Date.now()
+        type: type + START,
+        ...rest
     })
+
+    //no need in prod!
+    setTimeout(() => {
+        $.get(callAPI)
+            .done(response => next({ ...rest, type: type + SUCCESS, response }))
+            .fail(error => next({ ...rest, type: type + FAIL, error }))
+    }, 1000)
 }

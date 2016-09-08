@@ -1,4 +1,9 @@
 export default store => next => action => {
-    //ок, но не надо всем екшинам подрят прописывать commentId
-    next(Object.assign({}, action, { commentId: Math.random() }))
+    const { generateRandomId, ...rest } = action
+    if (!generateRandomId) return next(action)
+
+    next({
+        ...rest,
+        randomId: Date.now()
+    })
 }

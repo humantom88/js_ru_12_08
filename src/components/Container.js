@@ -11,7 +11,7 @@ class Container extends Component {
 
     componentDidMount() {
         const { loaded, loading, loadAllArticles, loadArticlesWithThunk } = this.props
-        // if (!loaded && !loading) loadAllArticles()
+       // if (!loaded && !loading) loadAllArticles()
         if (!loaded && !loading) loadArticlesWithThunk()
     }
 

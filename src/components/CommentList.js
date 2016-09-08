@@ -11,19 +11,19 @@ class CommentList extends Component {
         toggleOpen: PropTypes.func
     }
 
-    /*
-     componentDidMount() {
-     console.log('---', 'mounted')
-     }
+/*
+    componentDidMount() {
+        console.log('---', 'mounted')
+    }
 
-     componentWillUnmount() {
-     console.log('---', 'unmounting')
-     }
+    componentWillUnmount() {
+        console.log('---', 'unmounting')
+    }
 
-     componentWillReceiveProps() {
-     console.log('---', 'updating')
-     }
-     */
+    componentWillReceiveProps() {
+        console.log('---', 'updating')
+    }
+*/
 
     render() {
         const { article, isOpen, toggleOpen } = this.props

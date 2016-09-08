@@ -8,8 +8,8 @@ const ArticleList = React.createClass({
         const articleItems = this.props.articles.map(articleObject =>
             <li key = {articleObject.id}>
                 <Article article = {articleObject}
-                         isOpen = {this.state.openItemId === articleObject.id}
-                         toggleOpen = {this.toggleOpenItem(articleObject.id)}
+                    isOpen = {this.state.openItemId === articleObject.id}
+                    toggleOpen = {this.toggleOpenItem(articleObject.id)}
                 />
             </li>)
         return (

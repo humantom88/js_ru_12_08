@@ -11,6 +11,12 @@ module.exports = {
         filename: 'bundle.js',
         publicPath: '/static/'
     },
+    devServer: {
+        proxy: [{
+            path: '/api/*',
+            target: 'http://localhost:3001'
+        }]
+    },
     module: {
         loaders: [
             {
@@ -18,9 +24,9 @@ module.exports = {
                 loaders: ['babel'],
                 include: path.join(__dirname, 'src')
             },
-            { 
-                test: /\.css$/, 
-                loader: "style-loader!css-loader" 
+            {
+                test: /\.css/,
+                loader: 'style-loader!css-loader'
             }
         ]
     }
