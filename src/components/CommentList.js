@@ -3,6 +3,8 @@ import Comment from './Comment'
 import toggleOpen from '../decorators/toggleOpen'
 import CommentCount from './CommentCount'
 import NewCommentForm from './NewCommentForm'
+import { loadComments } from '../AC/comments'
+import { connect } from 'react-redux'
 
 class CommentList extends Component {
     static propTypes = {
@@ -20,14 +22,15 @@ class CommentList extends Component {
         console.log('---', 'unmounting')
     }
 
-    componentWillReceiveProps() {
-        console.log('---', 'updating')
-    }
 */
+    componentWillReceiveProps({ isOpen, loadComments, article: { id, commentsLoading, commentsLoaded } }) {
+        if (commentsLoaded || commentsLoading) return
+        if (isOpen && !this.props.isOpen) loadComments(id)
+    }
 
     render() {
         const { article, isOpen, toggleOpen } = this.props
-        const comments = article.comments
+        const { comments, commentsLoaded } = article
 
         if (!comments || !comments.length) return <div>No comments yet <NewCommentForm articleId = {article.id}/></div>
         const toggleButton = <a href="#" onClick = {toggleOpen}>{isOpen ? 'hide' : 'show'} comments.
@@ -35,6 +38,7 @@ class CommentList extends Component {
         </a>
 
         if (!isOpen) return <div>{toggleButton}</div>
+        if (!commentsLoaded) return <div>{toggleButton}<h1>Loading...</h1></div>
 
         const commentItems = comments.map(commentId => <li key = {commentId}><Comment commentId = {commentId} /></li>)
 
@@ -48,4 +52,4 @@ class CommentList extends Component {
     }
 }
 
-export default toggleOpen(CommentList)
+export default connect(null, { loadComments })(toggleOpen(CommentList))
