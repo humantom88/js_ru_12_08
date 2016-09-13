@@ -43,11 +43,11 @@ export default (state = defaultState, action) => {
                 .set('loaded', true)
 
         case LOAD_ARTICLE_BY_ID + START:
-            return state.updateIn(['entities', payload.id], article => article.set('loading', true))
+            return state.updateIn(['entities', payload.id], new Article({}), article => article.set('loading', true))
 
         case LOAD_ARTICLE_BY_ID + SUCCESS:
             return state
-                .setIn(['entities', payload.id], new Article(response))
+                .setIn(['entities', payload.id], new Article({...response, loaded: true}))
 
         case LOAD_COMMENTS + START:
             return state.setIn(['entities', payload.articleId, 'commentsLoading'], true)
