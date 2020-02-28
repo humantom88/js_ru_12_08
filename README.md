@@ -1,4 +1,1 @@
-# js_ru_12_08
-
-## ДЗ1 Отлично
-## ДЗ3 Отлично
+# Study projects from "React" Course by Javascript.ru
